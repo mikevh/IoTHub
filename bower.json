@@ -1,0 +1,22 @@
+{
+  "name": "controller",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Michael VanderHelm <mikevh@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0"
+  }
+}
