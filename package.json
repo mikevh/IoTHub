@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "azure-iot-device": "^1.0.1",
+    "azure-iot-device-amqp": "^1.0.1",
+    "body-parser": "^1.15.0",
     "bower": "^1.7.7",
     "express": "^4.13.4"
   },

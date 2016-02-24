@@ -1,9 +1,56 @@
-<html ng-app="app">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <title>Azure IoT Hub</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin-top: 60px
+        }
+    </style>
     <script src="/lib/angular/angular.min.js"></script>
-    <script src="/app/app.js"></script>
 </head>
-<body ng-controller="indexController">
-    hello {{hello}}!
+
+<body ng-app="app" ng-controller="indexController" class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">Azure IoT Hub</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/" class="active">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <button type="button" class="btn btn-lg btn-success" ng-click="send(1)">Turn On</button>
+    <button type="button" class="btn btn-lg btn-danger" ng-click="send(0)">Turn Off</button>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            angular.module('app', []).controller('indexController', function($scope, $http) {
+            
+            $scope.send = function(value) {
+                $http.post('/api/command/', {command: value});    
+            };
+            
+            });
+        })();
+    </script>
 </body>
+
 </html>
