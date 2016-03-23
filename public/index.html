@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Azure IoT Hub</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             margin-top: 60px
         }
     </style>
-    <script src="/lib/angular/angular.min.js"></script>
+
 </head>
 
 <body ng-app="app" ng-controller="indexController" class="container">
@@ -38,16 +39,66 @@
     <button type="button" class="btn btn-lg btn-success" ng-click="send(1)">Turn On</button>
     <button type="button" class="btn btn-lg btn-danger" ng-click="send(0)">Turn Off</button>
 
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Current Temperature</h2> The last recorded reading on device {{ latest_reading.deviceid }} was:
+            <br /> {{ latest_reading.temperature | number }}&deg; on {{ latest_reading.eventtime | date : 'medium' }}
+        </div>
+        <div class="col-md-4" style="max-width: 250px; overflow-wrap:break-word">
+            <h2>Alerts</h2>
+
+            <span ng-repeat="alert in latest_alerts">{{ alert }}</span>
+            <br />
+
+        </div>
+        <div class="col-md-4">
+            <h2>Temperature History</h2>
+            <div ng-show="temperatures.length > 0">
+                <h4>Most recent {{ temperatures.length }} readings </h4>
+                <div ng-repeat="t in temperatures" >
+                    <span>{{ t.deviceid }}: Temp: {{ t.temperature | number }}&deg; {{ t.eventtime | date : 'medium' }}</span>
+                    <br />
+                </div>
+                </div>
+            <div ng-show="temperatures.length === 0">
+                No temperature history found
+            </div>
+        </div>
+    </div>
+    <script src="/angular/angular.min.js"></script>
     <script>
         (function() {
             'use strict';
             
             angular.module('app', []).controller('indexController', function($scope, $http) {
             
-            $scope.send = function(value) {
-                $http.post('/api/command/', {command: value});    
-            };
+                $scope.latest_alerts = [];
+                $scope.temperatures = [];
             
+                $scope.send = function(value) {
+                    $http.post('/api/command/', {command: value});    
+                };
+            
+                $http.get('/api/alerts').success(function(data) {
+                    $scope.latest_alerts = data.reverse(); 
+                });
+            
+                $http.get('/api/temperatures').success(function(result) {
+                    
+                    if(result.length > 0) {
+                        angular.forEach(result, function(x) {
+                            $scope.temperatures.push({
+                                deviceid: x.deviceid._,
+                                temperature: x.temperaturereading._,
+                                eventtime: x.eventtime._
+                            });
+                            $scope.temperatures.reverse();
+                        }); 
+                        
+                        $scope.latest_reading = $scope.temperatures[0];
+                    } 
+                });
             });
         })();
     </script>

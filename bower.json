@@ -1,10 +1,7 @@
 {
   "name": "controller",
   "description": "",
-  "main": "index.js",
-  "authors": [
-    "Michael VanderHelm <mikevh@gmail.com>"
-  ],
+  "main": "server.js",
   "license": "ISC",
   "moduleType": [],
   "homepage": "",
@@ -12,11 +9,11 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "./public/lib",
     "test",
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.0"
+    "angular": "^1.5.2",
+    "bootstrap": "^3.3.6"
   }
 }
